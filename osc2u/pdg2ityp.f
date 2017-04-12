@@ -19,7 +19,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       integer iso3
 
       integer tab_size
-      parameter (TAB_SIZE = 180)
+      parameter (TAB_SIZE = 194)
 
       integer idtab(3,TAB_SIZE)
 
@@ -95,6 +95,8 @@ c rho
      .     104, -2,  -213,    104,  0,   113,    104,  2,   213,
 c f0(980)
      .     105,  0,9010221,
+! f0(1370)
+     &     105,  0,  10221,  ! would be neccessary if you are using osu-sampler; won't be a problem if use Duke-frzout
 c kaon
      .     106, -1,   311,    106,  1,   321,
 c eta'
@@ -107,8 +109,10 @@ c k0*(1430)
      .     110, -1, 10311,    110,  1, 10321,
 c a0(980)
      .     111, -2,-9000211,  111,  0, 9000111,  111,  2,9000211,
+! a0(1450)  ! would be neccessary if using osu-sampler
+     &     111, -2,  -10211,  111,  0,   10111,  111,  2,  10211,
 c f0(1370)
-     .     112,  0, 30221,
+     .     112,  0, 10221,
 c k1(1270)
      .     113, -1, 10313,    113,  1, 10323,
 c a1(1260)
@@ -135,22 +139,33 @@ c K* (1410)
      .     125, -1,100313,    125,  1,100323,
 c rho (1450)
      .     126, -2,-100213,   126,  0,100113,    126,  2,100213,
+! rho osu-sampler
+     &     126, -2,  40213,   126,  0, 40113,    126,  2, 40213,
 c omega (1420)
      .     127,  0,100223,
+! omega (1420)  osu-sampler
+     &     127,  0, 50223,
 c phi(1680)
      .     128,  0,100333,
+! phi(1680)  osu-sampler
+     &     128,  0, 10333,
 c k*(1680)
      .     129, -1, 30313,    129,  1, 30323,
+! K*(1680)  osu-sampler
+     &     129, -1, 40313,    129,  1, 40323,
 c rho(1700)
      .     130, -2,-30213,    130,  0, 30113,    130,  2, 30213,
 c omega(1650)
      .     131,  0, 30223,
+! omega (1650)   -- osu-sampler
+     &     131,  0, 60223,
 c phi(1850)
      .     132,  0,   337,
 c D
      .     133,  -1,   421,    133,   1,   411,
 c D*
      .     134,  -1, 10421,    134,   1, 10411,
+     .     134,  -1,   423,    134,   1,   413,
 c J/Psi
      .     135,  0, 443,
 c Chi_c
