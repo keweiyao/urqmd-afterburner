@@ -16,12 +16,12 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 c
       implicit none
       include 'ucoms.f'
+      include 'ucoms_HQ.f'
 
       integer iret,tstep,procev,i
 
-
-
       character*1 echar
+      character*77 file10, file20
       
 
       procev=0
@@ -137,14 +137,58 @@ c default settings for CTParam and CTOption cccccccccccccccccccccccccccccc
       CTOption(43)=0
 
 ccccccccccccccccccccccccccccccccccccccccccccccccc
+! read in the light hadron fileName
+      file10 = '    '
+      call getenv('ftn10',file10)
+      if (file10(1:4) .ne. '    ') then
+          open(UNIT=10,FILE=file10,STATUS='old',FORM='formatted')
+      else
+          write(6,*) "No light hadron list provided"
+          return
+      endif
 
+! read in heavy meson fileName
+      file20 = '    '
+      call getenv('ftn20',file20)
+      if (file20(1:4) .ne. '    ') then
+          open(UNIT=20,FILE=file20,STATUS='old',FORM='formatted')
+      else
+          write(6,*) "No heavy meson list provided"
+      endif
+
+
+! read in headers      
       call read_osc_header(iret)
       if(iret.eq.0) stop
+
+      if (file20(1:4) .ne. '    ') then
+          call read_HQmeson_header(iret)
+          if (iret .eq. 0) stop
+      endif
+
+! a bit more comment on this part
+! for each event, since right now all the oversampled light hadrons are store into different oversampled events
+! while the Dmesons are stored in a larger one event list
+! current way to solve this is to evenly distributed Dmesons into each oversampled events (if we believe the assumption
+! that each oversampled events have similar multiplicities)
+
+      call readInputFromCML()
+      hq_per_event = int(hq_npart / noversamples) 
+
+      
 
  1    continue
 
       call read_osc_event(iret)
       if(iret.eq.0) stop
+
+      if (file20(1:4) .ne. '    ') then
+          call read_HQmeson_event(iret, procev)
+          if(iret .eq. 0) stop
+      endif
+
+
+
 
 cdebug
 c      if(procev.gt.100) stop
@@ -153,7 +197,6 @@ c      if(procev.gt.100) stop
 
 cdebug
 c      if(procev.le.101) goto 1
-
 
 c     process the event
       call procevent(tstep)
@@ -225,7 +268,8 @@ c standard particle information vector
 cLHC 201  format(9e24.16,i11,2i3,i9,i5,i4)
 
 c special output for cto40 (restart of old event)
- 210  format(9e16.8,i11,2i3,i9,i5,i10,3e16.8,i8)
+! 210  format(9e16.8,i11,2i3,i9,i5,i10,3e16.8,i8)
+ 210  format(9e16.8,i11,2i3,i9,i5,i10,5e16.8)
 
 c collsision stats for file14
  202  format(8i8)
@@ -304,7 +348,7 @@ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC
 c
 
 c
-
+ 
       itotcoll=ctag-dectag
       iinelcoll=itotcoll-NBlColl-NElColl
       write(*,*) npart,out_time
@@ -320,6 +364,7 @@ c now write particle-output
      @        ityp(i),iso3(i),charge(i),
      @        lstcoll(i),ncoll(i),origin(i),
      @        dectime(i),thad(i),xtotfac(i)
+     &        ,t_ipT(i), t_weight(i)
 
  31   continue
 
@@ -341,13 +386,13 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       
       iret=1
 
-      read (unit=5,fmt=901,err=199,end=199) oscar_tag
-      read (unit=5,fmt=901,err=199,end=199) file_tag
+      read (unit=10,fmt=901,err=199,end=199) oscar_tag
+      read (unit=10,fmt=901,err=199,end=199) file_tag
 
  901  format (a12)
 
 
-      read (unit=5,fmt=902,err=199,end=199) 
+      read (unit=10,fmt=902,err=199,end=199) 
      &             model_tag, version_tag, cdummy1, Ap, cdummy1, 
      &             Zp, cdummy3, At, cdummy1, Zt, cdummy1,
      &             reffram, ebeam, ntestp
@@ -382,16 +427,19 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
       iret=1
       
-      read (unit=5,fmt=903,err=299,end=299) event, npart, bimp, dummy
+      read (unit=10,fmt=903,err=299,end=299) event,lq_npart,bimp,dummy
 
  903  format (i10,2x,i10,2x,f8.3,2x,f8.3)
 
 c particles
 
-      do 99 i=1,npart
-         read(5,904) j, t_ityp(i), 
+      do 99 i=1,lq_npart
+         read(10,904) j, t_ityp(i), 
      .        t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),     
      .        t_rx(i), t_ry(i), t_rz(i), t_r0(i), t_tform(i)
+
+         t_ipT(i) = 0d0
+         t_weight(i) = 0d0
  99   continue
 
  904  format (i10,2x,i10,2x,10(D24.16,2x))
@@ -407,4 +455,163 @@ c      here now id to ityp/iso3/charge conversion must take place
       end
 
 
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c added by Yingru Xu, Mar 30, 2017
+c>>>>>>>>>>>>>>> read in heavy meson header
+      subroutine read_HQmeson_header(iret)
+      implicit none
+      include 'ucoms_HQ.f'
+
+      integer iret, nstep, dum_NUMSAMP
+      integer Ap, At, Zp, Zt
+      real*8 ebeam
+      character*12 oscar_tag, file_tag
+      character*8 model_tag, version_tag
+      character*1 cdummy1
+      character*3 cdummy3
+      character*4 reffram
+
+
+      iret = 1
+
+      read (20,481,err=599,end=599) oscar_tag
+      read (20,481,err=599,end=599) file_tag
+
+ 481  format (a12)
+
+
+      read (20,490,err=599,end=599)
+     &             model_tag, version_tag, cdummy1, Ap, cdummy1,
+     &             Zp, cdummy3, At, cdummy1, Zt, cdummy1,
+     &             reffram, ebeam, nstep
+
+
+ 490   format (2(a8,2x),a1,i3,a1,i6,a3,i3,a1,i6,a1,2x,a4,2x,
+     &     e10.4,2x,i8)
+
+
+
+      hq_event = 0
+      hq_npart = 0
+      read (20,500,err=599,end=599)
+     &    hq_event,hq_npart,hq_imppar,hq_angle,hq_itim,dum_NUMSAMP
+
+ 500  format(i10,2x,i10,2x,f8.3,2x,f8.3,2x,i4,2x,i4,2X,i7)
+
+       return
+
+ 599  continue
+       iret = 0
+       write(6,*) "ERROR while read in heavy meson header "
+       write(6,*) "terminating ..."
+       return
+
+      end
+c<<<<<<<<<<<<< end of read in heavy meson header
+
+c>>>>>>>>>>>>>>>>>>read in heavy meson list
+      subroutine read_HQmeson_event(iret, ievent)
+      implicit none
+      include 'ucoms_HQ.f'
+      include 'ucoms.f'
+
+
+      integer i,j,iret, ievent, hq_this_event
+      double precision dummy
+! now read in heavy meson particles
+
+      hq_this_event = hq_per_event
+
+      if (ievent .eq. (noversamples-1)) then
+          hq_this_event = hq_npart - hq_per_event*ievent
+      endif
+
+!      write(6,*) "read in ", hq_this_event,
+!     &       " heavy meson in event ", ievent
+
+      npart = lq_npart + hq_this_event
+!      write(6,*) "light hadrons: ", lq_npart
+!      write(6,*) "total hadrons: ", npart
+
+      do 899 i=lq_npart+1, npart
+        read(20,8921) j,t_ityp(i),
+     &    t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),
+     &    t_rx(i), t_ry(i), t_rz(i), t_r0(i),
+     &    dummy, dummy, dummy, dummy, dummy,
+     &    dummy, t_ipT(i), t_weight(i)
+
+       !!write(6,*) ievent, j, t_ityp(i)
+
+ 899  continue
+
+ 8921 format(i10,2x,i10,17(2x,d12.6))
+      return
+
+ 8199 continue
+      iret = 0
+      write (6,*) "ERROR while read in heavy meson list..."
+      write (6,*) "terminating ..."
+      return
+
+      end
+ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+      subroutine readInputFromCML()
+      ! read inputs from command line
+      implicit none
+      include 'ucoms_HQ.f'
+
+      character*60 buffer
+      character*20 varName
+
+      integer DResult
+      integer QNum, ArgIndex
+
+      QNum = iargc()
+
+      Do ArgIndex = 1, QNum
+        call getarg(ArgIndex, buffer)
+        call processAssignment(buffer, "=", varName, DResult)
+
+        if (varName .eq. "nsamples") noversamples = DResult
+      enddo
+
+      end
+
+
+      subroutine processAssignment(string, seperator, varName, DResult)
+
+      Implicit None
+      Character :: seperator
+      Character (*) :: string, varName
+      Character*60 :: LHS, RHS
+      Integer:: DResult
+
+      Integer:: break_here, i, cha
+
+      varName = ""
+      break_here = index(string, seperator)
+      LHS = adjustl(string(:break_here-1))
+      RHS = adjustl(string(break_here+1:))
+
+      Do i=1, len_trim(LHS)
+          cha = ichar(LHS(i:i))
+          if (cha >=65 .AND. cha < 90) then
+              varName(i:i) = char(cha +32)
+          else
+              varName(i:i) = LHS(i:i)
+          endif
+      enddo
+
+      Read(RHS, fmt='(I10)') DResult
+
+      end
+
+
+
+
+
+
+
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c end of Yingru's modification
 

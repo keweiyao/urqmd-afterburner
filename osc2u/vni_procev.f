@@ -81,7 +81,6 @@ cccccccccccccccccccccccccccccccccccccccc
       nbar=0
 
       do 10 i=1,npart
-
 c convert particle ID
          pdgid=t_ityp(i)
          call pdg2id(it,i3,pdgid)

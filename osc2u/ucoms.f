@@ -5,15 +5,16 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       parameter (nmax = 200000)
 
 
-      integer Ap, At, Zp, Zt, npart, nbar, nmes, ctag
+      integer Ap, At, Zp, Zt, lq_npart, nbar, nmes, ctag, npart
       integer nsteps,ranseed,event,eos,dectag
       integer NHardRes,NSoftRes,NDecRes,NElColl,NBlColl
       real*8  time,  acttime, bdist, ebeam, bimp,bmin,ecm
 c 7 integer
 
-      common /sys/ npart, nbar, nmes, ctag,nsteps,
+      common /sys/ lq_npart, nbar, nmes, ctag,nsteps,
      +             ranseed,event,Ap,At,Zp,Zt,eos,dectag,
-     +             NHardRes,NSoftRes,NDecRes,NElColl,NBlColl
+     +             NHardRes,NSoftRes,NDecRes,NElColl,NBlColl,
+     &             npart
       common /rsys/ time,acttime,bdist,bimp,bmin,ebeam,ecm
 
 
@@ -44,6 +45,7 @@ c 6*nmax integer
      +     t_p0(nmax), t_px(nmax), t_py(nmax), t_pz(nmax),
      +     t_fmass(nmax), t_tform(nmax),
      +     dectime(nmax), tform(nmax), xtotfac(nmax), thad(nmax)
+     &     ,t_ipT(nmax), t_weight(nmax)
 
 c 8*nmax*nmax + 40*nmax real*8        
       
@@ -51,6 +53,7 @@ c 8*nmax*nmax + 40*nmax real*8
      &            t_ityp,t_iso3
       common /coor/ r0, rx, ry, rz, p0, px, py, pz, fmass, dectime,
      &              t_r0,t_rx,t_ry,t_rz,t_p0,t_px,t_py,t_pz,t_fmass
+     &              ,t_ipT, t_weight
       common /frag/ tform, xtotfac, t_tform, thad
 
       integer numcto,numctp
