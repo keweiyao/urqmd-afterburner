@@ -430,6 +430,9 @@ c and store entry channel in temporary observables
       tlcoll(1)=lstcoll(ind1)
       torigin(1)=origin(ind1)
       tuid(1)=uid(ind1)
+
+      ttform(1) = tform(ind1)
+      txtotfac(1) = xtotfac(ind1)
       if(ind2.le.0) then
          nin=1
       elseif(ind2.gt.0) then
@@ -453,6 +456,9 @@ c and store entry channel in temporary observables
          tlcoll(2)=lstcoll(ind2)
          torigin(2)=origin(ind2)
          tuid(2)=uid(ind2)
+    
+         ttform(2) = tform(ind2)
+         txtotfac(2) = xtotfac(ind2)
       endif
 
       return
@@ -467,6 +473,7 @@ c     format: x y z px py pz ityp iso3...
 
       write(iou(15),502) nin,nexit,iline,ctag,acttime,tsqrts
      ,     ,tstot,tsigpart,cdens
+
       do 11 i=1,nin
          istr=strit(tityp(i))
          ich = fchg(tiso3(i),tityp(i))

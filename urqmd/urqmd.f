@@ -207,13 +207,13 @@ c     ncharge is used for charge conservation check
  30               continue
 
 c     charge conservation check
-                  if(ocharge.ne.ncharge) then
-                     write(6,*)'ch-conservation error coll/dec ',ctag
-                     write(6,*)'   it1:',it1,'   it2:',it2
-                     write(6,*)'   ch:',ocharge,ncharge
-                     write(6,*)'cti1(k),cti2(k),ctsigtot(k),ctsqrts(k)'
-                     write(6,*)cti1(k),cti2(k),ctsigtot(k),ctsqrts(k)
-                  endif
+!                  if(ocharge.ne.ncharge) then
+!                     write(6,*)'ch-conservation error coll/dec ',ctag
+!                     write(6,*)'   it1:',it1,'   it2:',it2
+!                     write(6,*)'   ch:',ocharge,ncharge
+!                     write(6,*)'cti1(k),cti2(k),ctsigtot(k),ctsqrts(k)'
+!                     write(6,*)cti1(k),cti2(k),ctsigtot(k),ctsqrts(k)
+!                  endif
                endif
 
 c     update collisions for partners of annihilated particles
