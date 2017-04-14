@@ -937,7 +937,7 @@ c jbernhard's format
  955  format (a7,1x,i5,2x,a9,1x,i7)
 
 
- 956  format (i8,2x,i2,2x,7(e12.6,2x))
+ 956  format (i8,2x,i2,2x,8(e12.6,2x))
 
 
 c particle ID, charge, mass, pT, phi, eta
@@ -959,7 +959,7 @@ c particle ID, charge, mass, pT, phi, eta
          pz_ = pz(i) + ffermpx(i)
          pmag = sqrt(px_*px_ + py_*py_ + pz_*pz_)
          write(30,956) id, charge(i), fmass(i),
-     .        px_, py_, 0.5*log((p0(i)+pz_)/(p0(i)-pz_)),
+     .        px_, py_, pz_, 0.5*log((p0(i)+pz_)/(p0(i)-pz_)),
      .        0.5*log((pmag+pz_)/(pmag-pz_))
      &        , HQ_ipT(i), HQ_wt(i)
  544  continue
