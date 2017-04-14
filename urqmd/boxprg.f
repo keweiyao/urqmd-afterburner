@@ -56,7 +56,11 @@ c               Spin
          spin(i)=getspin(ityp(i),-1)
 c               decaytime
          dectime(i)=dectim(i,1)
-        
+ 
+!>>>>>> Yingru, Apr13, 2017>>>>>>>>>>>>>>>>>>>>>>
+        HQ_ipT(i)=0.d0
+        HQ_wt(i)=0.d0
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
  42   continue
 c       End of loop
 

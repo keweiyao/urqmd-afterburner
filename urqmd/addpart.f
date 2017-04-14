@@ -54,6 +54,10 @@ c     now shift vectors upwards
          ffermpx(i+1)=ffermpx(i)
          ffermpy(i+1)=ffermpy(i)
          ffermpz(i+1)=ffermpz(i)
+!>>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>
+         HQ_ipT(i+1) = HQ_ipT(i)
+         HQ_wt(i+1) = HQ_wt(i)
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
          r0_t(i+1)=r0_t(i)
          rx_t(i+1)=rx_t(i)
@@ -116,6 +120,10 @@ c     initialize new slot
          ffermpx(ind)=0.d0
          ffermpy(ind)=0.d0
          ffermpz(ind)=0.d0
+!>>>>>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>>>
+         HQ_ipT(ind) = 0.d0
+         HQ_wt(ind) = 0.d0
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 cpot
          r0_t(ind)=0.d0
          rx_t(ind)=0.d0

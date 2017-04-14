@@ -67,6 +67,10 @@ c     delete slot
          rx_t(i-1)=rx_t(i)
          ry_t(i-1)=ry_t(i)
          rz_t(i-1)=rz_t(i)
+!>>>>>>>>>>Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+         HQ_ipT(i-1) = HQ_ipT(i)
+         HQ_wt(i-1) = HQ_wt(i)
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 11 j=1,2
             p0td(j,i-1)=p0td(j,i)
@@ -171,6 +175,10 @@ c     update nbar and nmes counters
          tform(i-1)=tform(i)
          xtotfac(i-1)=xtotfac(i)
          uid(i-1)=uid(i)
+!>>>>>>>>> Yingru Apr13, 2017 >>>>>>>>>>>>>>>
+         HQ_ipT(i-1) = HQ_ipT(i)
+         HQ_wt(i-1) = HQ_wt(i)
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 c            ...
  10      continue
         npart=npart-1

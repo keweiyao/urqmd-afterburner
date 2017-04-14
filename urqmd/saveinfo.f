@@ -28,6 +28,8 @@ c     origint(2),uidt(2)
      @     p0t(2),pxt(2),pyt(2),pzt(2),fmasst(2),tdectime(2),
      @     xtotfact(2),tformt(2),p0tdt(2,2),pxtdt(2,2),pytdt(2,2),
      @     pztdt(2,2),fmasstdt(2,2)
+!>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>
+     &     ,HQ_ipTt(2), HQ_wtt(2)
       integer ityptdt(2,2),iso3tdt(2,2)
       save
 c
@@ -63,6 +65,10 @@ cpot
          uidt(islot)=uid(ind)
          xtotfact(islot)=xtotfac(ind)
          tformt(islot)=tform(ind)
+!>>>>>>>>>>>>>> Yingru, Apr13, 2017>>>>>>>>>>>>>>>>>>
+         HQ_ipTt(islot) = HQ_ipT(ind)
+         HQ_wtt(islot) = HQ_wt(ind)
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 11 j=1,2
             p0tdt(j,islot)=p0td(j,ind)
@@ -103,6 +109,10 @@ cpot
          uid(ind)=uidt(islot)
          xtotfac(ind)=xtotfact(islot)
          tform(ind)=tformt(islot)
+!>>>>>>>>>>>>>> Yingru >>>>>>>>>>>>>>>>
+         HQ_ipT(ind) = HQ_ipTt(islot)
+         HQ_wt(ind) = HQ_wtt(islot)
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 12 j=1,2
             p0td(j,ind)=p0tdt(j,islot)

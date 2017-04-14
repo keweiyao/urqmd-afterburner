@@ -145,6 +145,20 @@ c some abbreviations
          iso32=iso3(ind2)
       endif
 
+!>>>>>>>>> Yingru, Apr13, is neccessary in the case HQ meson has a weight
+        tmp_ipT(1)=HQ_ipT(ind1)
+        tmp_wt(1)=HQ_wt(ind1)
+        if(ind2.eq.0) then
+            tmp_ipT(2)=0
+            tmp_wt(2)=0
+        else
+            tmp_ipT(2)=HQ_ipT(ind2)
+            tmp_wt(2)=HQ_wt(2)
+        endif
+
+!<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
 
 
 
@@ -827,6 +841,8 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
               leadfac(itmp(i)) = xtotfac(inew(i))
               itypnew(itmp(i)) = ityp(inew(i))
               i3new(itmp(i)) = iso3(inew(i))
+              pnew_ipT(itmp(i)) = HQ_ipT(inew(i))
+              pnew_wt(itmp(i)) = HQ_wt(inew(i))
           enddo
 !         write(6,*)D_ctl,nexit,ind1,ind2,inew(1),inew(2),
 !    &            itypnew(1),itypnew(2),itmp(1),itmp(2),ipmp(1),ipmp(2)
@@ -835,8 +851,13 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
       if (D_ctl .eq. 2) then
 ! first check the light particle indices (better use temp one, this is the safest choice)
-         if(tityp(1).ne.133.and.tityp(1).ne.134) light_ind=1
-         if(tityp(2).ne.133.and.tityp(2).ne.134) light_ind=2
+         if(tityp(1).ne.133.and.tityp(1).ne.134) then
+             light_ind=1
+             heavy_ind=2
+         else if(tityp(2).ne.133.and.tityp(2).ne.134) then
+             light_ind=2
+             heavy_ind=1
+         endif
 
 !         write(6,*) "old: ",D_ctl,nexit,ind1,ind2,inew(1),inew(2),
 !     &    ityp(ind1),
@@ -864,6 +885,11 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
               itypnew(itmp(i)) = tityp(light_ind)
               i3new(itmp(i)) = tiso3(light_ind)
               tauf(itmp(i)) = 0.d0
+              pnew_ipT(itmp(i))=tmp_ipT(light_ind)
+              pnew_wt(itmp(i))=tmp_ipT(light_ind)
+          else
+              pnew_ipT(itmp(i))=tmp_ipT(heavy_ind)
+              pnew_ipT(itmp(i))=tmp_ipT(heavy_ind)
           endif
       enddo
 !            write(6,*) "new: ", D_ctl,nexit,ind1,ind2,inew(1),inew(2),
@@ -890,6 +916,8 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                ipmp(2) = 1
                itmp(2) = 1
          endif
+               pnew_ipT(ipmp(1)) = tmp_ipT(1)
+               pnew_wt(ipmp(1)) = tmp_wt(1)
          enddo
 !         nexit=1
 !       write(6,*)tstring(ipmp(i)),rstringx(ipmp(i)),rstringy(ipmp(i)),
@@ -923,7 +951,9 @@ c     write momenta to global arrays
          py(inew(i))=pnew(2,itmp(i))
          pz(inew(i))=pnew(3,itmp(i))
 
-
+!! record weight information as well
+        HQ_ipT(inew(i)) = pnew_ipT(ipmp(i))
+        HQ_wt(inew(i)) = pnew_wt(ipmp(i))
 c store formation time and leading hadron 
          if(pnew(5,itmp(i)).gt.0d0)then
             tform(inew(i))=tstring(1)+tauf(itmp(i))*

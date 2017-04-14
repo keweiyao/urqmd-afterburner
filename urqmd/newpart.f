@@ -48,6 +48,9 @@ c                time (.ne.1 only for leading hadrons)
       real*8 pnew(5,mprt),xnew(4,mprt),mstring(2),leadfac(mprt)
       real*8 pold(5,oprt),xtotfacold(oprt)
 
+      real*8 tmp_ipT(mprt),tmp_wt(mprt),pnew_ipT(mprt),pnew_wt(mprt)
+      common /wnewpart/ tmp_ipT, tmp_wt,pnew_ipT,pnew_wt
+
 
 c relative velocity/between comp. frame and two particle rest frame
 c is betax, betay, betaz (needed for lotrans)

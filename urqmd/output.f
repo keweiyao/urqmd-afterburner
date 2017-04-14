@@ -106,7 +106,7 @@ c standard particle information vector
 cLHC 201  format(9e24.16,i11,2i3,i9,i5,i4)
 
 c special output for cto40 (restart of old event)
- 210  format(9e16.8,i11,2i3,i9,i5,i10,3e16.8,i8)
+ 210  format(9e16.8,i11,2i3,i9,i5,i10,15e16.8)
 cLHC 210  format(9e24.16,i11,2i3,i9,i5,i10,3e24.16,i8)
 
 c special output for mmaker
@@ -769,7 +769,7 @@ c body for OSCAR 97A format
  903  format (i10,2x,i10,2x,f8.3,2x,f8.3)
 
 
- 904  format (i10,2x,i10,2x,9(e12.6,2x))
+ 904  format (i10,2x,i10,2x,16(e12.6,2x))
  
 
 c particles, original
@@ -780,6 +780,9 @@ c particles, original
      .        px(i)+ffermpx(i), py(i)+ffermpy(i), pz(i)+ffermpz(i), 
      .        p0(i), fmass(i),     
      .        frrx(i), frry(i), frrz(i), frr0(i)
+! Modified by Yingru (A modification of the 97A format)
+     &        ,0d0, 0d0, 0d0, 0d0, 0d0,
+     &        HQ_ipT(i), HQ_wt(i)
  99   continue
 
 
@@ -922,6 +925,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       entry nice_event
 
 c jbernhard's format
+! Modified by Yingru
 
       if (bf30) return
 
@@ -933,21 +937,33 @@ c jbernhard's format
  955  format (a7,1x,i5,2x,a9,1x,i7)
 
 
- 956  format (i8,2x,i2,2x,4(e12.6,2x))
+ 956  format (i8,2x,i2,2x,7(e12.6,2x))
 
 
 c particle ID, charge, mass, pT, phi, eta
+!      do 544 i=1,npart
+!         id = pdgid(ityp(i), iso3(i))
+!         px_ = px(i) + ffermpx(i)
+!         py_ = py(i) + ffermpx(i)
+!         pz_ = pz(i) + ffermpx(i)
+!         pmag = sqrt(px_*px_ + py_*py_ + pz_*pz_)
+!         write(30,956) id, charge(i), fmass(i),
+!     .        sqrt(px_*px_ + py_*py_), atan2(py_, px_),
+!     .        0.5*log((pmag+pz_)/(pmag-pz_))
+! 544  continue
 
-      do 544 i=1,npart
+       do 544 i=1,npart
          id = pdgid(ityp(i), iso3(i))
          px_ = px(i) + ffermpx(i)
          py_ = py(i) + ffermpx(i)
          pz_ = pz(i) + ffermpx(i)
          pmag = sqrt(px_*px_ + py_*py_ + pz_*pz_)
          write(30,956) id, charge(i), fmass(i),
-     .        sqrt(px_*px_ + py_*py_), atan2(py_, px_),
+     .        px_, py_, 0.5*log((p0(i)+pz_)/(p0(i)-pz_)),
      .        0.5*log((pmag+pz_)/(pmag-pz_))
+     &        , HQ_ipT(i), HQ_wt(i)
  544  continue
+
 
 
       return
@@ -1067,6 +1083,7 @@ c now read particle-output
      @        ityp(i),iso3(i),charge(i),
      @        lstcoll(i),ncoll(i),origin(i),
      @        dectime(i),tform(i),xtotfac(i)
+     &        ,HQ_ipT(i), HQ_wt(i)
       if(abs(ityp(i)).le.maxbar)nbar=nbar+1
  39   continue
       nmes=npart-nbar
