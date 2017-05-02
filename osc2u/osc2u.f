@@ -138,14 +138,14 @@ c default settings for CTParam and CTOption cccccccccccccccccccccccccccccc
 
 ccccccccccccccccccccccccccccccccccccccccccccccccc
 ! read in the light hadron fileName
-      file10 = '    '
-      call getenv('ftn10',file10)
-      if (file10(1:4) .ne. '    ') then
-          open(UNIT=10,FILE=file10,STATUS='old',FORM='formatted')
-      else
-          write(6,*) "No light hadron list provided"
-          return
-      endif
+c      file10 = '    '
+c      call getenv('ftn10',file10)
+c      if (file10(1:4) .ne. '    ') then
+c          open(UNIT=10,FILE=file10,STATUS='old',FORM='formatted')
+c      else
+c          write(6,*) "No light hadron list provided"
+c          return
+c      endif
 
 ! read in heavy meson fileName
       file20 = '    '
@@ -158,8 +158,6 @@ ccccccccccccccccccccccccccccccccccccccccccccccccc
 
 
 ! read in headers      
-      call read_osc_header(iret)
-      if(iret.eq.0) stop
 
       if (file20(1:4) .ne. '    ') then
           call read_HQmeson_header(iret)
@@ -179,7 +177,8 @@ ccccccccccccccccccccccccccccccccccccccccccccccccc
 
  1    continue
 
-      call read_osc_event(iret)
+	  event = 0
+      call read_event(iret)
       if(iret.eq.0) stop
 
       if (file20(1:4) .ne. '    ') then
@@ -207,6 +206,7 @@ c     process the event
       call write_uheader(14)
       call file14out(tstep)
 
+      event = event + 1
 
       goto 1
 
@@ -372,79 +372,27 @@ c
       return
       end
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      subroutine read_osc_header(iret)
+      subroutine read_event(iret)
 
       implicit none
       include 'ucoms.f'
 
-      character*12 oscar_tag, file_tag
-      character*8 model_tag, version_tag
-      character*1 cdummy1
-      character*3 cdummy3
-      character*4 reffram
-      integer ntestp,iret
-      
-      iret=1
-
-      read (unit=10,fmt=901,err=199,end=199) oscar_tag
-      read (unit=10,fmt=901,err=199,end=199) file_tag
-
- 901  format (a12)
-
-
-      read (unit=10,fmt=902,err=199,end=199) 
-     &             model_tag, version_tag, cdummy1, Ap, cdummy1, 
-     &             Zp, cdummy3, At, cdummy1, Zt, cdummy1,
-     &             reffram, ebeam, ntestp
-
-      if (reffram .eq. 'eqsp') then
-         CTOption(27)=0
-      elseif (reffram .eq. 'tar') then
-         CTOption(27)=1
-      elseif (reffram .eq. 'pro') then
-         CTOption(27)=2
-      endif
-
-
- 902  format (2(a8,2x),a1,i3,a1,i6,a3,i3,a1,i6,a1,2x,a4,2x,
-     &     e10.4,2x,i8)
-
-      return
- 199  continue
-      iret=0
-      return
-
-      end
-
-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
-      subroutine read_osc_event(iret)
-
-      implicit none
-      include 'ucoms.f'
-
-      integer i,j,iret
-      real*8 dummy
+      character comment
+      integer i,iret
 
       iret=1
-      
-      read (unit=10,fmt=903,err=299,end=299) event,lq_npart,bimp,dummy
 
- 903  format (i10,2x,i10,2x,f8.3,2x,f8.3)
+      ! number of particles in event
+      read(*,*,err=299,end=299) comment, lq_npart
 
-c particles
-
+      ! particle data
       do 99 i=1,lq_npart
-         read(10,904) j, t_ityp(i), 
-     .        t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),     
-     .        t_rx(i), t_ry(i), t_rz(i), t_r0(i), t_tform(i)
-
-         t_ipT(i) = 0d0
-         t_weight(i) = 0d0
+         read(*,*) t_ityp(i),
+     .        t_r0(i), t_rx(i), t_ry(i), t_rz(i),
+     .        t_p0(i), t_px(i), t_py(i), t_pz(i)
+         t_fmass(i) = sqrt(t_p0(i)**2
+     .        - t_px(i)**2 - t_py(i)**2 - t_pz(i)**2)
  99   continue
-
- 904  format (i10,2x,i10,2x,10(D24.16,2x))
-
-c      here now id to ityp/iso3/charge conversion must take place
 
       return
 
@@ -452,7 +400,7 @@ c      here now id to ityp/iso3/charge conversion must take place
       iret=0
       return
 
-      end
+	  end
 
 
 ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc

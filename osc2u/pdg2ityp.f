@@ -185,20 +185,28 @@ cb search for the ITYP in IDTAB
          if(idtab(3,i).eq.pdgid) then
             ityp=idtab(1,i)
             iso3=idtab(2,i)
+			if (134 .lt. ityp) then 
+			   write(*,*) 'wierd', ityp, pdgid
+			endif
             return
          elseif((pdgid.lt.0).and.(idtab(3,i).eq.abs(pdgid))) then
             ityp=-1*idtab(1,i)
             iso3=-1*idtab(2,i)
+			if (-134 .gt. ityp) then 
+			   write(*,*) 'wierd', ityp, pdgid
+			endif
             return
          endif
+
  99   continue
 
       ityp=99
       iso3=0
+	  write(6,*) ' fatal error in pdg2ityp: unknown PDG-Id: ',pdgid
+      stop
       return
 
-c      write(6,*) ' fatal error in pdg2ityp: unknown PDG-Id: ',pdgid
-c      stop
+      
 
 c handle all unknown ityps
 
