@@ -465,7 +465,7 @@ c>>>>>>>>>>>>>>>>>>read in heavy meson list
 
 
       integer i,j,iret, ievent, hq_this_event
-      double precision dummy
+      double precision dummy, init_px, init_py, init_pz
 ! now read in heavy meson particles
 
       hq_this_event = hq_per_event
@@ -485,8 +485,9 @@ c>>>>>>>>>>>>>>>>>>read in heavy meson list
         read(20,8921) j,t_ityp(i),
      &    t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),
      &    t_rx(i), t_ry(i), t_rz(i), t_r0(i),
-     &    dummy, dummy, dummy, dummy, dummy,
-     &    dummy, t_ipT(i), t_weight(i)
+     &    dummy, dummy, dummy, dummy, init_px,
+     &    init_py, init_pz, t_weight(i)
+		t_ipT(i) = sqrt(init_px**2 + init_py**2)
 
        !!write(6,*) ievent, j, t_ityp(i)
 
