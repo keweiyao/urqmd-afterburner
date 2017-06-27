@@ -901,7 +901,7 @@ c     format: x y z px py pz ityp iso3...
          i=inew(ii)
          id = pdgid(ityp(i), iso3(i))
          write(20,997) uid(i), id, 0,  
-     .        px(i), py(i), pz(i),p0(i),fmass(i), 
+     .        px(i), py(i), pz(i), p0(i),fmass(i), 
      .        rx(i), ry(i), rz(i), r0(i)
  912  continue
 

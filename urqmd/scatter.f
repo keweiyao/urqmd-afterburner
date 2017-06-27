@@ -733,7 +733,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       real*8 rpott(2),rpotx(2),rpoty(2),rpotz(2)
       real*8 tauf(mprt),tformold(2)
       integer getspin,bar,nm1,nm2
-      integer D_ctl, light_ind, heavy_ind
+      integer D_ctl, light_ind, heavy_ind, dummy
 
       common /scatcomr/rstringx,rstringy,rstringz,tstring,
      &                 rpott,rpotx,rpoty,rpotz,
@@ -849,6 +849,7 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
       endif
 
 
+
       if (D_ctl .eq. 2) then
 ! first check the light particle indices (better use temp one, this is the safest choice)
          if(tityp(1).ne.133.and.tityp(1).ne.134) then
@@ -898,13 +899,15 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 !     &      tityp(2),itmp(1),itmp(2),ipmp(1),ipmp(2)
       endif
  
-! a final delete slot , for D_ctl=3
-      if(D_ctl.eq.3) then
+! a final delete slot , for D_ctl=4
+      if(D_ctl.eq.4) then
 !       write(6,*)"old: ", D_ctl,nexit,ind1,ind2,inew(1),inew(2),tind(1),
 !     &     tind(2),itypnew(1),itypnew(2),itmp(1),itmp(2),ipmp(1),ipmp(2)
-         inew(1) = min0(inew(1), inew(2))
-         inew(2) = max0(inew(1), inew(2))
-         do i=1, nexit
+         if(inew(1) .gt. inew(2)) then
+             dummy = inew(1)
+             inew(1) = inew(2)
+             inew(2) = dummy
+         endif
          if(itypnew(1).eq.133 .or. itypnew(1).eq.134) then
                ipmp(1) = 1
                ipmp(2) = 2
@@ -916,15 +919,56 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                ipmp(2) = 1
                itmp(2) = 1
          endif
-               pnew_ipT(ipmp(1)) = tmp_ipT(1)
-               pnew_wt(ipmp(1)) = tmp_wt(1)
-         enddo
+         tstring(ipmp(1)) = r0(inew(1))
+         rstringx(ipmp(1)) = rx(inew(1))
+         rstringy(ipmp(1)) = ry(inew(1))
+         rstringz(ipmp(1)) = rz(inew(1))
+         rpott(ipmp(1)) = r0_t(inew(1))
+         rpotx(ipmp(1)) = rx_t(inew(1)) 
+         rpoty(ipmp(1)) = ry_t(inew(1))
+         rpotz(ipmp(1)) = rz_t(inew(1))
+         pnew(4,itmp(1)) = p0(inew(1))
+         pnew(1,itmp(1)) = px(inew(1))
+         pnew(2,itmp(1)) = py(inew(1))
+         pnew(3,itmp(1)) = pz(inew(1))
+         pnew(5,itmp(1)) = fmass(inew(1))          
+         leadfac(itmp(1)) = xtotfac(inew(1))
+         itypnew(itmp(1)) = ityp(inew(1))
+         i3new(itmp(1)) = iso3(inew(1))
+         pnew_ipT(itmp(1)) = HQ_ipT(inew(1))
+         pnew_wt(itmp(1)) = HQ_wt(inew(1))
+         
 !         nexit=1
 !       write(6,*)tstring(ipmp(i)),rstringx(ipmp(i)),rstringy(ipmp(i)),
 !     &      rstringz(ipmp(i)),rpott(ipmp(i)),rpotx(ipmp(i)),rpoty(ipmp)
 !       write(6,*) "new: ",D_ctl,nexit,ind1,ind2,inew(1),inew(2),tind(1),
 !     &     tind(2),itypnew(1),itypnew(2),itmp(1),itmp(2),ipmp(1),ipmp(2)
       endif
+
+! a final delete slot , for D_ctli=3
+      if(D_ctl.eq.3) then
+         if(inew(1) .gt. inew(2)) then
+             dummy = inew(1)
+             inew(1) = inew(2)
+             inew(2) = dummy
+         endif
+         if(itypnew(1).eq.133 .or. itypnew(1).eq.134) then
+               ipmp(1) = 1
+               ipmp(2) = 2
+               itmp(1) = 1
+               itmp(2) = 2
+         else
+               ipmp(1) = 2
+               itmp(1) = 2
+               ipmp(2) = 1
+               itmp(2) = 1
+         endif
+ 
+         pnew_ipT(ipmp(1)) = tmp_ipT(1)
+         pnew_wt(ipmp(1)) = tmp_wt(1)
+      endif
+
+
 
 c<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
@@ -985,7 +1029,7 @@ c     write mass, ID, I3 and spin to global arrays
 
  215  continue
 
-      if (D_ctl.eq.3) call delpart(inew(2))
+      if ( (D_ctl.eq.3) .or. (D_ctl.eq.4) ) call delpart(inew(2))
 
 c set lstcoll:
 c     lstcoll relates the outgoing particles of this scattering/decay interaction
@@ -1758,15 +1802,20 @@ c mesonic string: the first hadron contains one leading quark
       include 'coms.f'
       include 'comres.f'
 
-      integer D_ctl, ind1, ind2, idmin, idmax, id1, id2
+      integer D_ctl, ind1, ind2, idmin, idmax, id1, id2      
 
       if (ind2 .eq. 0) then
           id1 = abs(ityp(ind1))
           if (id1.eq.133 .or. id1.eq.134) then
-              D_ctl = 3
+              if (iso3(ind1).eq.1 .and. id1.eq.134) then
+                  ! D*+ does not decay
+                  D_ctl = 4
+              else
+                  D_ctl = 3
+              endif
           else
               D_ctl = 1
-           endif
+          endif
       else
          
           id1 = abs(ityp(ind1))
