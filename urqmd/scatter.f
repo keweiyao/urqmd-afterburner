@@ -147,13 +147,13 @@ c some abbreviations
 
 !>>>>>>>>> Yingru, Apr13, is neccessary in the case HQ meson has a weight
         tmp_ipT(1)=HQ_ipT(ind1)
-        tmp_wt(1)=HQ_wt(ind1)
+        tmp_iy(1)=HQ_iy(ind1)
         if(ind2.eq.0) then
             tmp_ipT(2)=0
-            tmp_wt(2)=0
+            tmp_iy(2)=0
         else
             tmp_ipT(2)=HQ_ipT(ind2)
-            tmp_wt(2)=HQ_wt(2)
+            tmp_iy(2)=HQ_iy(2)
         endif
 
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
@@ -842,7 +842,7 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
               itypnew(itmp(i)) = ityp(inew(i))
               i3new(itmp(i)) = iso3(inew(i))
               pnew_ipT(itmp(i)) = HQ_ipT(inew(i))
-              pnew_wt(itmp(i)) = HQ_wt(inew(i))
+              pnew_iy(itmp(i)) = HQ_iy(inew(i))
           enddo
 !         write(6,*)D_ctl,nexit,ind1,ind2,inew(1),inew(2),
 !    &            itypnew(1),itypnew(2),itmp(1),itmp(2),ipmp(1),ipmp(2)
@@ -887,10 +887,12 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
               i3new(itmp(i)) = tiso3(light_ind)
               tauf(itmp(i)) = 0.d0
               pnew_ipT(itmp(i))=tmp_ipT(light_ind)
-              pnew_wt(itmp(i))=tmp_ipT(light_ind)
+! Weiyao's Question
+              pnew_iy(itmp(i))=tmp_iy(light_ind)
           else
               pnew_ipT(itmp(i))=tmp_ipT(heavy_ind)
-              pnew_ipT(itmp(i))=tmp_ipT(heavy_ind)
+! Weiyao's Question
+              pnew_iy(itmp(i))=tmp_iy(heavy_ind)
           endif
       enddo
 !            write(6,*) "new: ", D_ctl,nexit,ind1,ind2,inew(1),inew(2),
@@ -936,7 +938,7 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
          itypnew(itmp(1)) = ityp(inew(1))
          i3new(itmp(1)) = iso3(inew(1))
          pnew_ipT(itmp(1)) = HQ_ipT(inew(1))
-         pnew_wt(itmp(1)) = HQ_wt(inew(1))
+         pnew_iy(itmp(1)) = HQ_iy(inew(1))
          
 !         nexit=1
 !       write(6,*)tstring(ipmp(i)),rstringx(ipmp(i)),rstringy(ipmp(i)),
@@ -965,7 +967,7 @@ c>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
          endif
  
          pnew_ipT(ipmp(1)) = tmp_ipT(1)
-         pnew_wt(ipmp(1)) = tmp_wt(1)
+         pnew_iy(ipmp(1)) = tmp_iy(1)
       endif
 
 
@@ -997,7 +999,7 @@ c     write momenta to global arrays
 
 !! record weight information as well
         HQ_ipT(inew(i)) = pnew_ipT(ipmp(i))
-        HQ_wt(inew(i)) = pnew_wt(ipmp(i))
+        HQ_iy(inew(i)) = pnew_iy(ipmp(i))
 c store formation time and leading hadron 
          if(pnew(5,itmp(i)).gt.0d0)then
             tform(inew(i))=tstring(1)+tauf(itmp(i))*

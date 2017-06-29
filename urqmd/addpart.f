@@ -56,7 +56,7 @@ c     now shift vectors upwards
          ffermpz(i+1)=ffermpz(i)
 !>>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>
          HQ_ipT(i+1) = HQ_ipT(i)
-         HQ_wt(i+1) = HQ_wt(i)
+         HQ_iy(i+1) = HQ_iy(i)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
          r0_t(i+1)=r0_t(i)
@@ -122,7 +122,7 @@ c     initialize new slot
          ffermpz(ind)=0.d0
 !>>>>>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>>>
          HQ_ipT(ind) = 0.d0
-         HQ_wt(ind) = 0.d0
+         HQ_iy(ind) = 0.d0
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 cpot
          r0_t(ind)=0.d0

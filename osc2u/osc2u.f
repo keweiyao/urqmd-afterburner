@@ -364,7 +364,7 @@ c now write particle-output
      @        ityp(i),iso3(i),charge(i),
      @        lstcoll(i),ncoll(i),origin(i),
      @        dectime(i),thad(i),xtotfac(i)
-     &        ,t_ipT(i), t_weight(i)
+     &        ,t_ipT(i), t_iy(i)
 
  31   continue
 
@@ -465,7 +465,7 @@ c>>>>>>>>>>>>>>>>>>read in heavy meson list
 
 
       integer i,j,iret, ievent, hq_this_event
-      double precision dummy, init_px, init_py, init_pz
+      double precision dummy, init_px, init_py, init_pz, init_p0
 ! now read in heavy meson particles
 
       hq_this_event = hq_per_event
@@ -486,9 +486,9 @@ c>>>>>>>>>>>>>>>>>>read in heavy meson list
      &    t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),
      &    t_rx(i), t_ry(i), t_rz(i), t_r0(i),
      &    dummy, dummy, dummy, dummy, init_px,
-     &    init_py, init_pz, t_weight(i)
+     &    init_py, init_pz, init_p0
 		t_ipT(i) = sqrt(init_px**2 + init_py**2)
-
+		t_iy(i) = 0.5*log((init_p0+init_pz)/(init_p0-init_pz))
        !!write(6,*) ievent, j, t_ityp(i)
 
  899  continue

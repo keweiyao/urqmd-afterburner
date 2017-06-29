@@ -27,8 +27,8 @@ c! put Dmeson list and light hardron list into one
 !      integer hq_num(MAXP), hq_id(MAXP)
 !      real*8  hq_px(MAXP), hq_py(MAXP), hq_pz(MAXP), hq_p0(MAXP),
 !     &        hq_rx(MAXP), hq_ry(MAXP), hq_rz(MAXP), hq_r0(MAXP),
-!     &        hq_mass(MAXP), hq_ipT(MAXP), hq_wt(MAXP)
+!     &        hq_mass(MAXP), hq_ipT(MAXP), hq_iy(MAXP)
 
 !      common /HQmeson/ hq_num,hq_id, hq_px, hq_py, hq_pz, hq_p0, hq_rx, 
-!     &                hq_ry, hq_rz, hq_r0, hq_mass, hq_ipT, hq_wt
+!     &                hq_ry, hq_rz, hq_r0, hq_mass, hq_ipT, hq_iy
       

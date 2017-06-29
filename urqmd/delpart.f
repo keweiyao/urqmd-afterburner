@@ -69,7 +69,7 @@ c     delete slot
          rz_t(i-1)=rz_t(i)
 !>>>>>>>>>>Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
          HQ_ipT(i-1) = HQ_ipT(i)
-         HQ_wt(i-1) = HQ_wt(i)
+         HQ_iy(i-1) = HQ_iy(i)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 11 j=1,2
@@ -177,7 +177,7 @@ c     update nbar and nmes counters
          uid(i-1)=uid(i)
 !>>>>>>>>> Yingru Apr13, 2017 >>>>>>>>>>>>>>>
          HQ_ipT(i-1) = HQ_ipT(i)
-         HQ_wt(i-1) = HQ_wt(i)
+         HQ_iy(i-1) = HQ_iy(i)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 c            ...
  10      continue

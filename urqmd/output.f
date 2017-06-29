@@ -782,7 +782,7 @@ c particles, original
      .        frrx(i), frry(i), frrz(i), frr0(i)
 ! Modified by Yingru (A modification of the 97A format)
      &        ,0d0, 0d0, 0d0, 0d0, 0d0,
-     &        HQ_ipT(i), HQ_wt(i)
+     &        HQ_ipT(i), HQ_iy(i)
  99   continue
 
 
@@ -961,7 +961,7 @@ c particle ID, charge, mass, pT, phi, eta
          write(30,956) id, charge(i), fmass(i),
      .        px_, py_, pz_, 0.5*log((p0(i)+pz_)/(p0(i)-pz_)),
      .        0.5*log((pmag+pz_)/(pmag-pz_))
-     &        , HQ_ipT(i), HQ_wt(i)
+     &        , HQ_ipT(i), HQ_iy(i)
  544  continue
 
 
@@ -1083,7 +1083,7 @@ c now read particle-output
      @        ityp(i),iso3(i),charge(i),
      @        lstcoll(i),ncoll(i),origin(i),
      @        dectime(i),tform(i),xtotfac(i)
-     &        ,HQ_ipT(i), HQ_wt(i)
+     &        ,HQ_ipT(i), HQ_iy(i)
       if(abs(ityp(i)).le.maxbar)nbar=nbar+1
  39   continue
       nmes=npart-nbar
