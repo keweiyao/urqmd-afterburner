@@ -269,7 +269,7 @@ cLHC 201  format(9e24.16,i11,2i3,i9,i5,i4)
 
 c special output for cto40 (restart of old event)
 ! 210  format(9e16.8,i11,2i3,i9,i5,i10,3e16.8,i8)
- 210  format(9e16.8,i11,2i3,i9,i5,i10,5e16.8)
+ 210  format(9e16.8,i11,2i3,i9,i5,i10,7e16.8)
 
 c collsision stats for file14
  202  format(8i8)
@@ -364,7 +364,7 @@ c now write particle-output
      @        ityp(i),iso3(i),charge(i),
      @        lstcoll(i),ncoll(i),origin(i),
      @        dectime(i),thad(i),xtotfac(i)
-     &        ,t_ipT(i), t_iy(i)
+     @        ,t_ipT(i), t_iy(i), t_s1(i), t_s2(i)
 
  31   continue
 
@@ -466,6 +466,7 @@ c>>>>>>>>>>>>>>>>>>read in heavy meson list
 
       integer i,j,iret, ievent, hq_this_event
       double precision dummy, init_px, init_py, init_pz, init_p0
+	  double precision s1, s2
 ! now read in heavy meson particles
 
       hq_this_event = hq_per_event
@@ -486,14 +487,16 @@ c>>>>>>>>>>>>>>>>>>read in heavy meson list
      &    t_px(i), t_py(i), t_pz(i), t_p0(i), t_fmass(i),
      &    t_rx(i), t_ry(i), t_rz(i), t_r0(i),
      &    dummy, dummy, dummy, dummy, init_px,
-     &    init_py, init_pz, init_p0
+     &    init_py, init_pz, init_p0, s1, s2
 		t_ipT(i) = sqrt(init_px**2 + init_py**2)
 		t_iy(i) = 0.5*log((init_p0+init_pz)/(init_p0-init_pz))
+		t_s1(i) = s1
+		t_s2(i) = s2
        !!write(6,*) ievent, j, t_ityp(i)
 
  899  continue
 
- 8921 format(i10,2x,i10,17(2x,d12.6))
+ 8921 format(i10,2x,i10,19(2x,d12.6))
       return
 
  8199 continue

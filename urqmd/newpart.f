@@ -49,7 +49,9 @@ c                time (.ne.1 only for leading hadrons)
       real*8 pold(5,oprt),xtotfacold(oprt)
 
       real*8 tmp_ipT(mprt),tmp_iy(mprt),pnew_ipT(mprt),pnew_iy(mprt)
-      common /wnewpart/ tmp_ipT, tmp_iy,pnew_ipT,pnew_iy
+	  real*8 tmp_s1(mprt),tmp_s2(mprt),pnew_s1(mprt),pnew_s2(mprt)
+      common /wnewpart/ tmp_ipT, tmp_iy, pnew_ipT, pnew_iy, 
+     &                  tmp_s1, tmp_s2, pnew_s1, pnew_s2
 
 
 c relative velocity/between comp. frame and two particle rest frame

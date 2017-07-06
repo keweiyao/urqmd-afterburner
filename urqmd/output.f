@@ -769,7 +769,7 @@ c body for OSCAR 97A format
  903  format (i10,2x,i10,2x,f8.3,2x,f8.3)
 
 
- 904  format (i10,2x,i10,2x,16(e12.6,2x))
+ 904  format (i10,2x,i10,2x,18(e12.6,2x))
  
 
 c particles, original
@@ -782,7 +782,7 @@ c particles, original
      .        frrx(i), frry(i), frrz(i), frr0(i)
 ! Modified by Yingru (A modification of the 97A format)
      &        ,0d0, 0d0, 0d0, 0d0, 0d0,
-     &        HQ_ipT(i), HQ_iy(i)
+     &        HQ_ipT(i), HQ_iy(i), HQ_s1(i), HQ_s2(i)
  99   continue
 
 
@@ -937,7 +937,7 @@ c jbernhard's format
  955  format (a7,1x,i5,2x,a9,1x,i7)
 
 
- 956  format (i8,2x,i2,2x,8(e12.6,2x))
+ 956  format (i8,2x,i2,2x,10(e12.6,2x))
 
 
 c particle ID, charge, mass, pT, phi, eta
@@ -960,8 +960,8 @@ c particle ID, charge, mass, pT, phi, eta
          pmag = sqrt(px_*px_ + py_*py_ + pz_*pz_)
          write(30,956) id, charge(i), fmass(i),
      .        px_, py_, pz_, 0.5*log((p0(i)+pz_)/(p0(i)-pz_)),
-     .        0.5*log((pmag+pz_)/(pmag-pz_))
-     &        , HQ_ipT(i), HQ_iy(i)
+     .        0.5*log((pmag+pz_)/(pmag-pz_)),
+     .        HQ_ipT(i), HQ_iy(i), HQ_s1(i), HQ_s2(i)
  544  continue
 
 
@@ -1082,8 +1082,8 @@ c now read particle-output
      @        px(i),py(i),pz(i),fmass(i),
      @        ityp(i),iso3(i),charge(i),
      @        lstcoll(i),ncoll(i),origin(i),
-     @        dectime(i),tform(i),xtotfac(i)
-     &        ,HQ_ipT(i), HQ_iy(i)
+     @        dectime(i),tform(i),xtotfac(i),
+     @        HQ_ipT(i), HQ_iy(i), HQ_s1(i), HQ_s2(i)
       if(abs(ityp(i)).le.maxbar)nbar=nbar+1
  39   continue
       nmes=npart-nbar

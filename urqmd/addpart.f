@@ -57,6 +57,8 @@ c     now shift vectors upwards
 !>>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>
          HQ_ipT(i+1) = HQ_ipT(i)
          HQ_iy(i+1) = HQ_iy(i)
+		 HQ_s1(i+1) = HQ_s1(i)
+         HQ_s2(i+1) = HQ_s2(i)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
          r0_t(i+1)=r0_t(i)
@@ -123,6 +125,8 @@ c     initialize new slot
 !>>>>>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>>>
          HQ_ipT(ind) = 0.d0
          HQ_iy(ind) = 0.d0
+		 HQ_s1(ind) = 0.d0
+         HQ_s2(ind) = 0.d0
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 cpot
          r0_t(ind)=0.d0

@@ -60,6 +60,8 @@ c               decaytime
 !>>>>>> Yingru, Apr13, 2017>>>>>>>>>>>>>>>>>>>>>>
         HQ_ipT(i)=0.d0
         HQ_iy(i)=0.d0
+        HQ_s1(i)=0.d0
+        HQ_s2(i)=0.d0
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
  42   continue
 c       End of loop

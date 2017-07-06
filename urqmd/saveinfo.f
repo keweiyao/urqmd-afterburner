@@ -24,12 +24,12 @@ c
       integer charget(2),spint(2)
 c     origint(2),uidt(2)
       real*8 r0t(2),rxt(2),ryt(2),rzt(2),
-     p      r0tt(2),rxtt(2),rytt(2),rztt(2),
+     @      r0tt(2),rxtt(2),rytt(2),rztt(2),
      @     p0t(2),pxt(2),pyt(2),pzt(2),fmasst(2),tdectime(2),
      @     xtotfact(2),tformt(2),p0tdt(2,2),pxtdt(2,2),pytdt(2,2),
-     @     pztdt(2,2),fmasstdt(2,2)
+     @     pztdt(2,2),fmasstdt(2,2),
 !>>> Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>
-     &     ,HQ_ipTt(2), HQ_iyt(2)
+     @     HQ_ipTt(2), HQ_iyt(2), HQ_s1t(2), HQ_s2t(2)
       integer ityptdt(2,2),iso3tdt(2,2)
       save
 c
@@ -68,6 +68,8 @@ cpot
 !>>>>>>>>>>>>>> Yingru, Apr13, 2017>>>>>>>>>>>>>>>>>>
          HQ_ipTt(islot) = HQ_ipT(ind)
          HQ_iyt(islot) = HQ_iy(ind)
+         HQ_s1t(islot) = HQ_s1(ind)
+         HQ_s2t(islot) = HQ_s2(ind)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 11 j=1,2
@@ -112,6 +114,8 @@ cpot
 !>>>>>>>>>>>>>> Yingru >>>>>>>>>>>>>>>>
          HQ_ipT(ind) = HQ_ipTt(islot)
          HQ_iy(ind) = HQ_iyt(islot)
+         HQ_s1(ind) = HQ_s1t(islot)
+         HQ_s2(ind) = HQ_s2t(islot)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 12 j=1,2

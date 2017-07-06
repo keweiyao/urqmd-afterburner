@@ -70,6 +70,8 @@ c     delete slot
 !>>>>>>>>>>Yingru, Apr13, 2017 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>
          HQ_ipT(i-1) = HQ_ipT(i)
          HQ_iy(i-1) = HQ_iy(i)
+         HQ_s1(i-1) = HQ_s1(i)
+         HQ_s2(i-1) = HQ_s2(i)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ctd
          do 11 j=1,2
@@ -178,6 +180,8 @@ c     update nbar and nmes counters
 !>>>>>>>>> Yingru Apr13, 2017 >>>>>>>>>>>>>>>
          HQ_ipT(i-1) = HQ_ipT(i)
          HQ_iy(i-1) = HQ_iy(i)
+         HQ_s1(i-1) = HQ_s1(i)
+         HQ_s2(i-1) = HQ_s2(i)
 !<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 c            ...
  10      continue

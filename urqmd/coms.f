@@ -122,13 +122,13 @@ c 19 real*8
      +     fmass(nmax), rww(nmax), 
      +     dectime(nmax), tform(nmax), xtotfac(nmax)
 !>>>>>>>>>> Yingru >>> HQ weight >>>>>>>>>>>>>>>>>>>>
-     &     ,HQ_ipT(nmax), HQ_iy(nmax)
+     &     ,HQ_ipT(nmax), HQ_iy(nmax), HQ_s1(nmax), HQ_s2(nmax)
 
       common/isys/spin,ncoll,charge,ityp,lstcoll,iso3,origin,
      +            uid
       common /coor/ r0, rx, ry, rz, p0, px, py, pz, fmass, rww, dectime
       common /frag/ tform, xtotfac
-      common /HQweight/ HQ_ipT, HQ_iy
+      common /HQweight/ HQ_ipT, HQ_iy, HQ_s1, HQ_s2
 
 c     spin    : particle spin
 c     ncoll   : particle number of collisions
