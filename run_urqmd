@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# read arguments
+outputFile=$2
+inputFile=$1
+# run UrQMD
+ftn09=urqmd.conf ftn10=$inputFile ftn30=$outputFile urqmd || exit 1

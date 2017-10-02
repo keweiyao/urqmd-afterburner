@@ -25,4 +25,5 @@ endif()
 add_subdirectory(osc2u)
 add_subdirectory(urqmd)
 
-install(PROGRAMS afterburner DESTINATION bin)
+install(PROGRAMS convert_format DESTINATION bin)
+install(PROGRAMS run_urqmd DESTINATION bin)

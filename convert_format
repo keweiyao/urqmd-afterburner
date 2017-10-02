@@ -2,9 +2,8 @@
 
 # read arguments
 num=$1
-outputFile=$2
-light=$3
-heavy=$4
+light=$2
+heavy=$3
 
 # run the OSCAR to UrQMD converter
 # ftn10 would be light hadron sampled from particlization
@@ -37,5 +36,3 @@ f20
 xxx
 EOF
 
-# run UrQMD
-ftn09=urqmd.conf ftn10=urqmd_input.dat ftn30=$outputFile urqmd || exit 1
